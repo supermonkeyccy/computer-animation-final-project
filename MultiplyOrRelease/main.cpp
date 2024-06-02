@@ -6,8 +6,8 @@
 #include "Circle.h"
 #include "Player.h"
 
+int windowWidth = 1280, windowHeight = 640;
 // parameters
-const int windowWidth = 1280, windowHeight = 640;
 const glm::vec4 GRAY  (0.3f , 0.3f , 0.3f , 1.0f);
 const glm::vec4 ORANGE(0.75f, 0.4f , 0.0f , 1.0f);
 const glm::vec4 PURPLE(0.6f , 0.0f , 0.8f , 1.0f);
@@ -378,6 +378,8 @@ glm::vec3 scale(glm::vec3 v)
 }
 
 void frameBufferSize_callback(GLFWwindow *window, int width, int height) {
+    windowWidth = width;
+    windowHeight = height;
     glViewport(0, 0, width, height);
 }
 
@@ -389,6 +391,10 @@ void add_black_hole(GLFWwindow* window, int button, int action, int mods)
         glfwGetCursorPos(window, &xpos, &ypos);
         xpos = (2.0f * xpos) / windowWidth - 1.0f;
         ypos = 1.0f - (2.0f * ypos) / windowHeight;
+        if (xpos < 0.075 || xpos > 0.925 || ypos < -0.85 || ypos > 0.85)    //playground range
+        {
+            return;
+        }
         std::cout << "Mouse button pressed at position (" << xpos << ", " << ypos << ")\n";
         blackhole = new Ball(16384, glm::vec3(xpos, ypos, -0.002), glm::vec3(0.0), glm::vec3(0.0), glm::vec4(0.0, 0.0, 0.0, 1.0));
         glfwSetMouseButtonCallback(window, remove_black_hole);
