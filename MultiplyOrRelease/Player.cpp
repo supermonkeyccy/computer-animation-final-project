@@ -486,6 +486,11 @@ unsigned int Player::getNumCannons() const
     return cannons.size();
 }
 
+std::vector<Ball>& Player::getCannon()
+{
+    return cannons;
+}
+
 void Player::setColor(glm::vec4 color)
 {
     this->color = color;

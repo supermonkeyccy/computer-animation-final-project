@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\include;C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\user\Desktop\init_final\computer-animation-final-project\MultiplyOrRelease\glm;D:\user\Desktop\init_final\computer-animation-final-project\MultiplyOrRelease\include\glad;D:\user\Desktop\init_final\computer-animation-final-project\MultiplyOrRelease\include;C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\include;C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\user\Desktop\init_final\computer-animation-final-project\MultiplyOrRelease\libs;C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\include;C:\Users\user\Desktop\courses\elective\ComputerAnimationSpecialEffects\Final Project\MultiplyOrRelease\MultiplyOrRelease\glm;$(IncludePath)</IncludePath>

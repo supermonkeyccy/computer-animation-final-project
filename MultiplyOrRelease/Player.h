@@ -77,6 +77,7 @@ public:
     Ball& getControlBall(unsigned int index = 0);
     unsigned int getNumControlBalls() const;
     unsigned int getNumCannons() const;
+    std::vector<Ball>& getCannon();
 
     void setColor(glm::vec4 color);
     void setBasePosition(glm::vec3 position);

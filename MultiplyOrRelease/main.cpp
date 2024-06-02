@@ -34,6 +34,8 @@ Player* players;
 
 // multiplier balls : *2, *4, *8, *16
 Ball* multipliers;
+//black hole
+Ball* blackhole;
 
 // vertices & order to draw a rectangle
 const float rectVertices[] = {
@@ -85,6 +87,9 @@ void moveMultiplierBalls();
 glm::vec3 scale(glm::vec3 v);
 
 void frameBufferSize_callback(GLFWwindow *window, int width, int height);
+//black-hole extension
+void add_black_hole(GLFWwindow* window, int button, int action, int mods);
+void remove_black_hole(GLFWwindow* window, int button, int action, int mods);
 
 int main()
 {
@@ -210,6 +215,7 @@ int main()
 
     // render loop ------------------------------------------------------
     glEnable(GL_DEPTH_TEST);
+    glfwSetMouseButtonCallback(window, add_black_hole);
     while (!glfwWindowShouldClose(window))
     {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -238,6 +244,19 @@ int main()
             for (int j = i + 1; j < 4; j++)
                 players[i].computeGravity(players[j]);
 
+            if (blackhole)
+            {
+                std::vector<Ball>& can = players[i].getCannon();
+                for (int x = 0; x < can.size(); x++)
+                {
+                    glm::vec3 diff = blackhole->getPosition() - can[x].getPosition();
+                    glm::vec3 dir = glm::normalize(diff);
+                    double length = diff.x / dir.x;
+                    double t = 0.001 / length / length;
+                    can[x].addAcceleration(dir * (float)(t * sqrt(blackhole->getValue())));
+                }
+            }
+
             // 0. move control balls, cannons, bullets
             // 1. collisions between control balls and the wall
             //    a player should perform some behavior upon reaching some zones
@@ -261,6 +280,9 @@ int main()
 
         for (int i = 0; i < 4; i++)
             multipliers[i].draw(shader, VAOc, VBOc, EBOc);
+
+        if(blackhole)
+            blackhole->draw(shader, VAOc, VBOc, EBOc);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -325,3 +347,32 @@ glm::vec3 scale(glm::vec3 v)
 void frameBufferSize_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
+
+void add_black_hole(GLFWwindow* window, int button, int action, int mods) 
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        xpos = (2.0f * xpos) / windowWidth - 1.0f;
+        ypos = 1.0f - (2.0f * ypos) / windowHeight;
+        std::cout << "Mouse button pressed at position (" << xpos << ", " << ypos << ")\n";
+        blackhole = new Ball(16384, glm::vec3(xpos, ypos, -0.002), glm::vec3(0.0), glm::vec3(0.0), glm::vec4(0.0, 0.0, 0.0, 1.0));
+        glfwSetMouseButtonCallback(window, remove_black_hole);
+    }
+}
+
+void remove_black_hole(GLFWwindow* window, int button, int action, int mods) 
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        xpos = (2.0f * xpos) / windowWidth - 1.0f;
+        ypos = 1.0f - (2.0f * ypos) / windowHeight;
+        std::cout << "Mouse button released at position (" << xpos << ", " << ypos << ")\n";
+        blackhole = NULL;
+        glfwSetMouseButtonCallback(window, add_black_hole);
+    }
+}
+
