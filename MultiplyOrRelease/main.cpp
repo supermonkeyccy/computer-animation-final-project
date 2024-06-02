@@ -430,9 +430,11 @@ void change_gravity_direction(GLFWwindow* window, int key, int scancode, int act
                 std::cout << "change gravity from right to left.\n";
                 gravity_dir = 4;
                 break;
-            default:
+            case GLFW_KEY_0:
                 std::cout << "no gravity.\n";
                 gravity_dir = 0;
+                break;
+            default:
                 break;
         }
     }
