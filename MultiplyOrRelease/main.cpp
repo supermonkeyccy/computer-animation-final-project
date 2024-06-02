@@ -36,6 +36,9 @@ Player* players;
 Ball* multipliers;
 //black hole
 Ball* blackhole;
+//gravity direction
+int gravity_dir = 0;
+glm::vec3 gravity;
 
 // vertices & order to draw a rectangle
 const float rectVertices[] = {
@@ -90,6 +93,8 @@ void frameBufferSize_callback(GLFWwindow *window, int width, int height);
 //black-hole extension
 void add_black_hole(GLFWwindow* window, int button, int action, int mods);
 void remove_black_hole(GLFWwindow* window, int button, int action, int mods);
+//change gravity direction
+void change_gravity_direction(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
@@ -216,6 +221,7 @@ int main()
     // render loop ------------------------------------------------------
     glEnable(GL_DEPTH_TEST);
     glfwSetMouseButtonCallback(window, add_black_hole);
+    glfwSetKeyCallback(window, change_gravity_direction);
     while (!glfwWindowShouldClose(window))
     {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -243,7 +249,7 @@ int main()
             // store the acceleration
             for (int j = i + 1; j < 4; j++)
                 players[i].computeGravity(players[j]);
-
+            //blackhole effect
             if (blackhole)
             {
                 std::vector<Ball>& can = players[i].getCannon();
@@ -256,7 +262,34 @@ int main()
                     can[x].addAcceleration(dir * (float)(t * sqrt(blackhole->getValue())));
                 }
             }
-
+            //additional gravity effect
+            if (gravity_dir == 1 || gravity_dir == 2 || gravity_dir == 3 || gravity_dir == 4)
+            {
+                std::vector<Ball>& can = players[i].getCannon();
+                if (gravity_dir == 1)
+                {
+                    gravity = { 0.0, -1.0, 0.0 };
+                }
+                else if (gravity_dir == 2)
+                {
+                    gravity = { 0.0, 1.0, 0.0 };
+                }
+                else if (gravity_dir == 3)
+                {
+                    gravity = { 1.0, 0.0, 0.0 };
+                }
+                else if (gravity_dir == 4) {
+                    gravity = { -1.0, 0.0, 0.0 };
+                }
+                else
+                {
+                    gravity = { 0.0, 0.0, 0.0 };
+                }
+                for (int x = 0; x < can.size(); x++)
+                {
+                    can[x].addAcceleration(gravity / (float)(can[x].getValue()));
+                }
+            }
             // 0. move control balls, cannons, bullets
             // 1. collisions between control balls and the wall
             //    a player should perform some behavior upon reaching some zones
@@ -375,4 +408,34 @@ void remove_black_hole(GLFWwindow* window, int button, int action, int mods)
         glfwSetMouseButtonCallback(window, add_black_hole);
     }
 }
+
+void change_gravity_direction(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (action == GLFW_PRESS)
+    {
+        switch (key) {
+            case GLFW_KEY_1:
+                std::cout << "change gravity from up to down.\n";
+                gravity_dir = 1;
+                break;
+            case GLFW_KEY_2:
+                std::cout << "change gravity from down to up.\n";
+                gravity_dir = 2;
+                break;
+            case GLFW_KEY_3:
+                std::cout << "change gravity from left to right.\n";
+                gravity_dir = 3;
+                break;
+            case GLFW_KEY_4:
+                std::cout << "change gravity from right to left.\n";
+                gravity_dir = 4;
+                break;
+            default:
+                std::cout << "no gravity.\n";
+                gravity_dir = 0;
+                break;
+        }
+    }
+}
+
 
