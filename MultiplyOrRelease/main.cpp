@@ -395,7 +395,7 @@ void add_black_hole(GLFWwindow* window, int button, int action, int mods)
         {
             return;
         }
-        std::cout << "Mouse button pressed at position (" << xpos << ", " << ypos << ")\n";
+        std::cout << "The blackhole is placed at (" << xpos << ", " << ypos << ")\n";
         blackhole = new Ball(16384, glm::vec3(xpos, ypos, -0.002), glm::vec3(0.0), glm::vec3(0.0), glm::vec4(0.0, 0.0, 0.0, 1.0));
         glfwSetMouseButtonCallback(window, remove_black_hole);
     }
@@ -405,12 +405,8 @@ void remove_black_hole(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
     {
-        double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
-        xpos = (2.0f * xpos) / windowWidth - 1.0f;
-        ypos = 1.0f - (2.0f * ypos) / windowHeight;
-        std::cout << "Mouse button released at position (" << xpos << ", " << ypos << ")\n";
         blackhole = NULL;
+        std::cout << "The blackhole has been removed.\n";
         glfwSetMouseButtonCallback(window, add_black_hole);
     }
 }
